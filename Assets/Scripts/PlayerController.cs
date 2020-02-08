@@ -3,6 +3,11 @@
 public class PlayerController : MonoBehaviour
 {
 
+    // Cached references
+    private Rigidbody _rigidBody;
+    private GridManager _gridManager;
+    private AudioSource _audioSource;
+    
     private Vector3 _destPos;
 
     private enum PlayerState
@@ -16,6 +21,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _rigidBody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
+        
+        _gridManager = GameObject.FindWithTag("GridManager").GetComponent<GridManager>();
+        
         _destPos = transform.position;
     }
 
@@ -24,18 +34,12 @@ public class PlayerController : MonoBehaviour
     {
         Move();
     }
-    
-    public bool IsWandering()
-    {
-        return _currState == PlayerState.WANDERING;
-    }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Pumpkin"))
         {
-            GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
-            Destroy(other.gameObject);
+            EatPumpkin(other.gameObject);
         } else if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             SetCurrentState(other.GetComponent<Tile>().IsGrass() ? PlayerState.HIDING : PlayerState.WANDERING);
@@ -44,36 +48,69 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.W) && HasPlayerReachedDestination())
+        if (Input.GetKeyDown(KeyCode.W) && CanMove(Vector3.forward))
         {
             _destPos += Vector3.forward;
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && HasPlayerReachedDestination())
+        if (Input.GetKeyDown(KeyCode.D) && CanMove(Vector3.right))
         {
             _destPos += Vector3.right;
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && HasPlayerReachedDestination())
+        if (Input.GetKeyDown(KeyCode.S) && CanMove(Vector3.back))
         {
             _destPos += Vector3.back;
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && HasPlayerReachedDestination())
+        if (Input.GetKeyDown(KeyCode.A) && CanMove(Vector3.left))
         {
             _destPos += Vector3.left;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, _destPos, Time.deltaTime * 3f);
+        _rigidBody.MovePosition(_destPos);
     }
 
+    private bool CanMove(Vector3 nextDesiredMove)
+    {
+        return IsPlayerInsideGridBoundaries(nextDesiredMove) && HasPlayerReachedDestination();
+    }
+    
     private bool HasPlayerReachedDestination()
     {
         return transform.position == _destPos;
+    }
+
+    private bool IsPlayerInsideGridBoundaries(Vector3 nextMove)
+    {
+        Vector3 expectedMove = _destPos + nextMove;
+        return (expectedMove.x >= _gridManager.MinPositionX() && expectedMove.x <= _gridManager.MaxPositionX()) &&
+               (expectedMove.z >= _gridManager.MinPositionZ() && expectedMove.z <= _gridManager.MaxPositionZ());
     }
 
     private void SetCurrentState(PlayerState newState)
     {
         _currState = newState;
     }
+
+    private void EatPumpkin(GameObject pumpkin)
+    {
+        Destroy(pumpkin);
+        UpdateScore();
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_audioSource.clip);    
+        }
+    }
+
+    private void UpdateScore()
+    {
+        Score.score++;
+    }
+    
+    public bool IsWandering()
+    {
+        return _currState == PlayerState.WANDERING;
+    }
+    
 }

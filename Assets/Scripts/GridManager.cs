@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
     
     public GameObject tilePrefab;
+
+    private GameObject _firstTile;
     
     // Start is called before the first frame update
     void Start()
     {
         GenerateGridTerrain();
+        _firstTile = GetFirstTileOnGrid();
     }
 
     private void GenerateGridTerrain()
@@ -31,21 +35,21 @@ public class GridManager : MonoBehaviour
 
     private void SpawnTileAtPosition(Vector3 startingSpawnPosition, float row, float col)
     {
-        // Tile edges should align with the terrain, not their centers, so we must shift them by their "radius"
-        Vector3 TILE_OFFSET = new Vector3 (Tile.XZ_SIZE / 2.0f, Tile.Y_SIZE / 2.0f, Tile.XZ_SIZE / 2.0f);
-        // Convert row and column to local x and z coordinates
+        // Align the tiles with the terrain
+        Vector3 TILE_OFFSET = new Vector3 (Tile.XZ_SIZE / 2.0f, 0, Tile.XZ_SIZE / 2.0f);
+        // Converting row and column to x and z coordinates
         Vector3 xyzPosition = new Vector3 (row * Tile.XZ_SIZE, 0, col * Tile.XZ_SIZE);
         // Instantiate the tiles on the grid
         GameObject tile = Instantiate (tilePrefab,
             (startingSpawnPosition + TILE_OFFSET + xyzPosition), Quaternion.identity, transform);
-
+        
         // FIXME: This should be a generic random seed generator
         var tileScript = tile.GetComponent<Tile>();
         var range = Random.Range(0, 10);
-        if (range == 0 || range == 1)
+        if (range == 0)
         {
             tileScript.SetTileType(Tile.TileType.SCARECROW);
-        } else if (range == 2 || range == 3 || range == 4 || range == 5 || range == 6)
+        } else if (range == 1 || range == 2 || range == 3 || range == 4 || range == 5 || range == 6)
         {
             tileScript.SetTileType(Tile.TileType.GRASS);
         }
@@ -53,5 +57,30 @@ public class GridManager : MonoBehaviour
         {
             tileScript.SetTileType(Tile.TileType.PLANT);
         }
+    }
+
+    private GameObject GetFirstTileOnGrid()
+    {
+        return gameObject.transform.GetChild(0).gameObject;
+    }
+
+    public float MinPositionX()
+    {
+        return _firstTile.transform.position.x;
+    }
+
+    public float MaxPositionX()
+    {
+        return Mathf.Abs(_firstTile.transform.position.x);
+    }
+    
+    public float MinPositionZ()
+    {
+        return _firstTile.transform.position.z;
+    }
+
+    public float MaxPositionZ()
+    {
+        return Mathf.Abs(_firstTile.transform.position.z);
     }
 }

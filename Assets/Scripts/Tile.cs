@@ -14,8 +14,7 @@ public class Tile : MonoBehaviour
     
     // Consts
     static public float XZ_SIZE = 1.0f;
-    static public float Y_SIZE = 0.1f;
-    
+
     // Available types for a ground tile
     public enum TileType
     {

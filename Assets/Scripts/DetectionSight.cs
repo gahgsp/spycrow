@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 
-public class AISight : MonoBehaviour
+public class DetectionSight : MonoBehaviour
 {
     public float fieldOfViewAngle = 110f;
     public float rotationSpeed = 30f;
-
+    
     // Cached references
     private GameObject _player;
     private SphereCollider _collider;
+    private AudioSource _audioSource;
+
+    private float _howFarCanISee;
+    private int _onlyLayerToRaycast = 1 << 10; // Player layer (10)
     
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.FindWithTag("Player");
         _collider = GetComponent<SphereCollider>();
+        _audioSource = GetComponent<AudioSource>();
+
+        _howFarCanISee = _collider.radius;
     }
 
     // Update is called once per frame
@@ -24,7 +31,7 @@ public class AISight : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        CheckIfCaughtPlayer(other);
+        CheckIfDetectedPlayer(other);
     }
 
     private void Rotate()
@@ -32,7 +39,7 @@ public class AISight : MonoBehaviour
         transform.Rotate(0f, Time.deltaTime * rotationSpeed, 0f);
     }
 
-    private void CheckIfCaughtPlayer(Collider other)
+    private void CheckIfDetectedPlayer(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -41,15 +48,23 @@ public class AISight : MonoBehaviour
 
             if (angle < fieldOfViewAngle / 2)
             {
-                if (Physics.Raycast(transform.position + (transform.up / 3), direction.normalized, out RaycastHit hit,
-                    _collider.radius))
+                if (Physics.Raycast(transform.position + (transform.up / 4), direction.normalized, out RaycastHit hit,
+                    _howFarCanISee, _onlyLayerToRaycast))
                 {
                     if (hit.collider.gameObject == _player && _player.GetComponent<PlayerController>().IsWandering())
                     {
-                        Debug.Log("You got caught!");
+                        PlayDetectedSound();
                     }
                 }
             }
+        }
+    }
+
+    private void PlayDetectedSound()
+    {
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_audioSource.clip);
         }
     }
 }
