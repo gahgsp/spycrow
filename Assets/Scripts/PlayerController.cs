@@ -96,18 +96,13 @@ public class PlayerController : MonoBehaviour
     private void EatPumpkin(GameObject pumpkin)
     {
         Destroy(pumpkin);
-        UpdateScore();
+        Score.UpdateScore();
         if (!_audioSource.isPlaying)
         {
             _audioSource.PlayOneShot(_audioSource.clip);    
         }
     }
 
-    private void UpdateScore()
-    {
-        Score.score++;
-    }
-    
     public bool IsWandering()
     {
         return _currState == PlayerState.WANDERING;

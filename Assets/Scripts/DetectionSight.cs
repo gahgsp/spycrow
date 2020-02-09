@@ -53,18 +53,24 @@ public class DetectionSight : MonoBehaviour
                 {
                     if (hit.collider.gameObject == _player && _player.GetComponent<PlayerController>().IsWandering())
                     {
-                        PlayDetectedSound();
+                        OnPlayerDetection();
                     }
                 }
             }
         }
     }
 
-    private void PlayDetectedSound()
+    private void OnPlayerDetection()
     {
         if (!_audioSource.isPlaying)
         {
             _audioSource.PlayOneShot(_audioSource.clip);
         }
+        Invoke(nameof(LoadDeathScreen), _audioSource.clip.length);
+    }
+
+    private void LoadDeathScreen()
+    {
+        UIManager.GoToDeathScreen();
     }
 }
