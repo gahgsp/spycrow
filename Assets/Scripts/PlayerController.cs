@@ -2,30 +2,33 @@
 
 public class PlayerController : MonoBehaviour
 {
-
+    
     // Cached references
     private Rigidbody _rigidBody;
     private GridManager _gridManager;
     private AudioSource _audioSource;
-    
+    private MeshRenderer _meshRenderer;
+
     private Vector3 _destPos;
+    private Color _materialColor;
+    private PlayerState _currState;
 
     private enum PlayerState
     {
         HIDING,
         WANDERING
     }
-
-    private PlayerState _currState;
     
     // Start is called before the first frame update
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
-        
+        _meshRenderer = GetComponent<MeshRenderer>();
+
         _gridManager = GameObject.FindWithTag("GridManager").GetComponent<GridManager>();
-        
+
+        _materialColor = _meshRenderer.material.color;
         _destPos = transform.position;
     }
 
@@ -33,6 +36,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
+        _meshRenderer.material.color = IsHiding()
+            ? new Color(_materialColor.r, _materialColor.g, _materialColor.b, 0.5f)
+            : new Color(_materialColor.r, _materialColor.g, _materialColor.b, 1f);
     }
 
     void OnTriggerEnter(Collider other)
@@ -44,7 +50,8 @@ public class PlayerController : MonoBehaviour
             {
                 UIManager.GoToWinScreen();
             }
-        } else if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             SetCurrentState(other.GetComponent<Tile>().IsGrass() ? PlayerState.HIDING : PlayerState.WANDERING);
         }
@@ -79,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         return IsPlayerInsideGridBoundaries(nextDesiredMove) && HasPlayerReachedDestination();
     }
-    
+
     private bool HasPlayerReachedDestination()
     {
         return transform.position == _destPos;
@@ -103,7 +110,7 @@ public class PlayerController : MonoBehaviour
         ScoreManager.UpdateScore();
         if (!_audioSource.isPlaying)
         {
-            _audioSource.PlayOneShot(_audioSource.clip);    
+            _audioSource.PlayOneShot(_audioSource.clip);
         }
     }
 
@@ -111,5 +118,9 @@ public class PlayerController : MonoBehaviour
     {
         return _currState == PlayerState.WANDERING;
     }
-    
+
+    public bool IsHiding()
+    {
+        return _currState == PlayerState.HIDING;
+    }
 }

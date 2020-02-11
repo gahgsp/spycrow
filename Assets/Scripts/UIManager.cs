@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     public void Retry()
     {
         ScoreManager.ResetScore();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(1);
     }
 
     public void BackToMainMenu()
@@ -31,6 +31,6 @@ public class UIManager : MonoBehaviour
     public static void GoToWinScreen()
     {
         ScoreManager.ResetScore();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        SceneManager.LoadScene(3);
     }
 }
