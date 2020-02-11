@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour
+public class ScoreManager : MonoBehaviour
 {
 
     // Cached reference
     private Text _scoreText;
     
-    private static float _score = 0;
+    private static int _score = 0;
+    private static int _pumpkinAmount = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -29,5 +30,15 @@ public class Score : MonoBehaviour
     public static void UpdateScore()
     {
         _score++;
+    }
+
+    public static void AddPumpkinQuantityOnMap(int quantity)
+    {
+        _pumpkinAmount += quantity;
+    }
+
+    public static bool CollectedAllPumpkins()
+    {
+        return _pumpkinAmount == _score;
     }
 }

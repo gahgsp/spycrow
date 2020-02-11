@@ -5,18 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -24,19 +12,25 @@ public class UIManager : MonoBehaviour
 
     public void Retry()
     {
-        Score.ResetScore();
+        ScoreManager.ResetScore();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void BackToMainMenu()
     {
-        Score.ResetScore();
+        ScoreManager.ResetScore();
         SceneManager.LoadScene(0);
     }
 
     public static void GoToDeathScreen()
     {
-        Score.ResetScore();
+        ScoreManager.ResetScore();
         SceneManager.LoadScene(2);
+    }
+
+    public static void GoToWinScreen()
+    {
+        ScoreManager.ResetScore();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
 }

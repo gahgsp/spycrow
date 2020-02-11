@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Pumpkin"))
         {
             EatPumpkin(other.gameObject);
+            if (ScoreManager.CollectedAllPumpkins())
+            {
+                UIManager.GoToWinScreen();
+            }
         } else if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             SetCurrentState(other.GetComponent<Tile>().IsGrass() ? PlayerState.HIDING : PlayerState.WANDERING);
@@ -96,7 +100,7 @@ public class PlayerController : MonoBehaviour
     private void EatPumpkin(GameObject pumpkin)
     {
         Destroy(pumpkin);
-        Score.UpdateScore();
+        ScoreManager.UpdateScore();
         if (!_audioSource.isPlaying)
         {
             _audioSource.PlayOneShot(_audioSource.clip);    

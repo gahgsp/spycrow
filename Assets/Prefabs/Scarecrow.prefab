@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 3295616267725485351}
   - component: {fileID: 306444184}
   - component: {fileID: 437000352930841887}
+  - component: {fileID: -8969552077495405314}
   - component: {fileID: -7394211866889945068}
   m_Layer: 0
   m_Name: Scarecrow
@@ -619,6 +620,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldOfViewAngle: 110
   rotationSpeed: 30
+--- !u!114 &-8969552077495405314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295616267725485350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e9a673a4f8eb4b45b33af46372c554c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldOfViewLength: 1.5
+  angle: 55
+  segments: 10
+  meshMaterial: {fileID: 2100000, guid: 80f46e7662dc38842a8d50b31d98f62a, type: 2}
 --- !u!82 &-7394211866889945068
 AudioSource:
   m_ObjectHideFlags: 0
