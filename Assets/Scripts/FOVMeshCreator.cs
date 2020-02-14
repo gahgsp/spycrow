@@ -2,10 +2,10 @@
 
 public class FOVMeshCreator : MonoBehaviour
 {
-    public float fieldOfViewLength = 1.5f;
-    public float angle = 55f;
-    public int segments = 10;
-    public Material meshMaterial;
+    [SerializeField] float fieldOfViewLength = 1.5f;
+    [SerializeField] float angle = 55f;
+    [SerializeField] int segments = 10;
+    [SerializeField] Material meshMaterial;
 
     private Mesh _fieldOfViewMesh;
     private Vector3[] _vertices;

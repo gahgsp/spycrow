@@ -2,10 +2,10 @@
 
 public class DetectionSight : MonoBehaviour
 {
-    public float fieldOfViewAngle = 110f;
-    public float rotationSpeed = 30f;
+    [SerializeField] float fieldOfViewAngle = 110f;
+    [SerializeField] float rotationSpeed = 30f;
     
-    // Cached references
+    // Cached references.
     private GameObject _player;
     private SphereCollider _collider;
     private AudioSource _audioSource;

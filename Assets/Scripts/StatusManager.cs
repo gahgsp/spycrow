@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class StatusManager : MonoBehaviour
 {
 
-    public Sprite visibleImage;
-    public Sprite invisibleImage;
+    [SerializeField] Sprite visibleImage;
+    [SerializeField] Sprite invisibleImage;
 
     private Image _image;
     private PlayerController _playerController;
@@ -16,19 +14,17 @@ public class StatusManager : MonoBehaviour
     void Start()
     {
         _image = GetComponent<Image>();
-        _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_playerController.IsHiding())
+        // We do this because the Canvas is created before the Player is instantiated.
+        // Is there a better way to do this?
+        if (!_playerController)
         {
-            _image.sprite = invisibleImage;
+            _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         }
-        else
-        {
-            _image.sprite = visibleImage;
-        }
+        _image.sprite = _playerController.IsHiding() ? invisibleImage : visibleImage;
     }
 }

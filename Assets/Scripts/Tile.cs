@@ -3,19 +3,20 @@
 public class Tile : MonoBehaviour
 {
 
-    // Materials
-    public Material grassMaterial;
-    public Material plantMaterial;
-    public Material scarecrowMaterial;
+    [Header("Types of Tile")]
+    [SerializeField] Material grassMaterial;
+    [SerializeField] Material plantMaterial;
+    [SerializeField] Material scarecrowMaterial;
     
-    // Objects to spawn
-    public GameObject pumpkin;
-    public GameObject scarecrow;
+    [Header("Spawnables")]
+    [SerializeField] GameObject pumpkin;
+    [SerializeField] GameObject scarecrow;
+    [SerializeField] GameObject crow;
     
     // Consts
     static public float XZ_SIZE = 1.0f;
-
-    // Available types for a ground tile
+    
+    // Available types for a ground tile.
     public enum TileType
     {
         GRASS,
@@ -47,12 +48,7 @@ public class Tile : MonoBehaviour
         }
         _currTileType = newTileType;
     }
-
-    public bool IsGrass()
-    {
-        return _currTileType == TileType.GRASS;
-    }
-
+    
     private void SpawnPlant(TileType tileType)
     {
         if (tileType == TileType.PLANT)
@@ -74,4 +70,18 @@ public class Tile : MonoBehaviour
                 transform);
         }
     }
+
+    public void SpawnCrow()
+    {
+        Instantiate(crow,
+                new Vector3(GetComponent<Renderer>().bounds.center.x, 0.6f, GetComponent<Renderer>().bounds.center.z),
+                Quaternion.identity,
+                transform);
+    }
+    
+    public bool IsGrass()
+    {
+        return _currTileType == TileType.GRASS;
+    }
+
 }

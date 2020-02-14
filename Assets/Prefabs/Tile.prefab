@@ -111,3 +111,4 @@ MonoBehaviour:
   pumpkin: {fileID: 2450382565455114418, guid: 2b8ac81ee9abe244b92bf47584cbdcf4, type: 3}
   scarecrow: {fileID: 3295616267725485350, guid: 876996877263cff4ca7def7bb20ab528,
     type: 3}
+  crow: {fileID: 6255761999844187516, guid: ddb7669d74acb214fad1169902001304, type: 3}
