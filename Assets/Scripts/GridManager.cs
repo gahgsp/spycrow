@@ -2,7 +2,7 @@
 
 public class GridManager : MonoBehaviour
 {
-    public GameObject tilePrefab;
+    [SerializeField] GameObject tilePrefab;
 
     private GameObject _firstTile;
 

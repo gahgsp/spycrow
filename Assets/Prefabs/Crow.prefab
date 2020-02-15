@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7753008857907564907}
   - component: {fileID: 462424338}
   - component: {fileID: 462424339}
+  - component: {fileID: -8529314107055113007}
   m_Layer: 10
   m_Name: Crow
   m_TagString: Player
@@ -219,3 +220,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-8529314107055113007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255761999844187516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7be64c90d59abf48af5576f1be3dfc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
