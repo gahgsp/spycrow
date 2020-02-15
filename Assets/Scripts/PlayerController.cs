@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void EatPumpkin(GameObject pumpkin)
     {
-        Destroy(pumpkin);
+        pumpkin.gameObject.GetComponent<PumpkinController>().Eat();
         ScoreManager.UpdateScore();
         if (!_audioSource.isPlaying)
         {
