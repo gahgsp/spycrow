@@ -6,7 +6,7 @@ This game has a lot of inspiration in different games and was developed with the
 
 ## How to Play
 
-Use AWSD keys to move to player. You must reach the tile with the pumpkin to eat it. Remember to avoid the view from the scarecrows using the grass tiles to finish the mission!
+Use AWSD keys to move the player. You must reach the tile with the pumpkin to eat it. Remember to avoid the view from the scarecrows using the grass tiles to finish the mission!
 
 Tip: pay attention to the "eye icon" on the left! When you are on a grass tile, it will show that you are invisible to the scarecrows, so use this as an advantage in your mission.
 
@@ -14,7 +14,7 @@ Tip: pay attention to the "eye icon" on the left! When you are on a grass tile, 
 
 My focus was 100% on the programming side of the game, because the main goal of this game was to learn more about how Unity works.
 
-That's way the player is still a black sphere and there is a lack of visual elements during the gameplay.
+That's why the player is still a black sphere and there is a lack of visual elements during the gameplay.
 
 ## Demonstration
 
