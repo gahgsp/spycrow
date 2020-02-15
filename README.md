@@ -18,5 +18,5 @@ That's way the player is still a black sphere and there is a lack of visual elem
 
 ## Demonstration
 
-(Demo/SpycrowDemo.gif)
+![Spycrow - Animated Gif Demo](Demo/SpycrowDemo.gif)
 
