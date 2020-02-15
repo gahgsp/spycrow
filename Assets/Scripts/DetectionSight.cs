@@ -4,14 +4,17 @@ public class DetectionSight : MonoBehaviour
 {
     [SerializeField] float fieldOfViewAngle = 110f;
     [SerializeField] float rotationSpeed = 30f;
+    [SerializeField] private GameObject exclamationSign;
     
     // Cached references.
     private GameObject _player;
     private SphereCollider _collider;
     private AudioSource _audioSource;
 
+    private Vector3 _currPosition;
     private float _howFarCanISee;
     private int _onlyLayerToRaycast = 1 << 10; // Player layer (10)
+    private bool _alreadySpawnedExclamation;
     
     // Start is called before the first frame update
     void Start()
@@ -19,7 +22,9 @@ public class DetectionSight : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         _collider = GetComponent<SphereCollider>();
         _audioSource = GetComponent<AudioSource>();
-
+        
+        _currPosition = GetComponent<Transform>().position;
+        
         _howFarCanISee = _collider.radius;
     }
 
@@ -43,12 +48,12 @@ public class DetectionSight : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Vector3 direction = other.transform.position - transform.position;
+            Vector3 direction = other.transform.position - _currPosition;
             float angle = Vector3.Angle(direction, transform.forward);
 
             if (angle < fieldOfViewAngle / 2)
             {
-                if (Physics.Raycast(transform.position + (transform.up / 4), direction.normalized, out RaycastHit hit,
+                if (Physics.Raycast(_currPosition + (transform.up / 4), direction.normalized, out RaycastHit hit,
                     _howFarCanISee, _onlyLayerToRaycast))
                 {
                     if (hit.collider.gameObject == _player && _player.GetComponent<PlayerController>().IsWandering())
@@ -66,6 +71,16 @@ public class DetectionSight : MonoBehaviour
         {
             _audioSource.PlayOneShot(_audioSource.clip);
         }
+
+        // We only need one exclamation...
+        if (!_alreadySpawnedExclamation)
+        {
+            Instantiate(exclamationSign,
+                new Vector3(_currPosition.x, _currPosition.y * 5, _currPosition.z),
+                Quaternion.identity, transform);    
+            _alreadySpawnedExclamation = true;
+        }
+        
         Invoke(nameof(LoadDeathScreen), _audioSource.clip.length);
     }
 
