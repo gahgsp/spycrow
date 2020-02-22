@@ -12,9 +12,12 @@ public class Tile : MonoBehaviour
     [SerializeField] GameObject pumpkin;
     [SerializeField] GameObject scarecrow;
     [SerializeField] GameObject crow;
+
+    [Header("Visuals")]
+    [SerializeField] GameObject grass;
     
     // Consts
-    static public float XZ_SIZE = 1.0f;
+    public static float XZ_SIZE = 1.0f;
     
     // Available types for a ground tile.
     public enum TileType
@@ -38,6 +41,7 @@ public class Tile : MonoBehaviour
     {
         if (newTileType == TileType.GRASS)
         {
+            grass.SetActive(true);
             GetComponent<Renderer>().material = grassMaterial;
         } else if (newTileType == TileType.PLANT)
         {

@@ -31,4 +31,9 @@ public class UIManager : MonoBehaviour
         ScoreManager.ResetScore();
         SceneManager.LoadScene(3);
     }
+
+    public static void QuitGame()
+    {
+        Application.Quit();
+    }
 }
