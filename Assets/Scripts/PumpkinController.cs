@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(ParticleSystem))]
 public class PumpkinController : MonoBehaviour
 {
 

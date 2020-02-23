@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Text))]
 public class ScoreManager : MonoBehaviour
 {
 
-    // Cached reference
+    // Cached reference.
     private Text _scoreText;
     
     private static int _score = 0;
@@ -35,13 +36,11 @@ public class ScoreManager : MonoBehaviour
     public static void UpdateScore()
     {
         _score++;
-        Debug.Log("Coletado: " + _score);
     }
 
     public static void AddPumpkinQuantityOnMap(int quantity)
     {
         _pumpkinAmount += quantity;
-        Debug.Log("Quantidade: " + _pumpkinAmount);
     }
 
     public static bool CollectedAllPumpkins()

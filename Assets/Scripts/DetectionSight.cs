@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(AudioSource))]
 public class DetectionSight : MonoBehaviour
 {
     [SerializeField] float fieldOfViewAngle = 110f;
