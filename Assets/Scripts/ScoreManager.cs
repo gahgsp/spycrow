@@ -27,14 +27,21 @@ public class ScoreManager : MonoBehaviour
         _score = 0;
     }
 
+    public static void ResetQuantity()
+    {
+        _pumpkinAmount = 0;
+    }
+
     public static void UpdateScore()
     {
         _score++;
+        Debug.Log("Coletado: " + _score);
     }
 
     public static void AddPumpkinQuantityOnMap(int quantity)
     {
         _pumpkinAmount += quantity;
+        Debug.Log("Quantidade: " + _pumpkinAmount);
     }
 
     public static bool CollectedAllPumpkins()

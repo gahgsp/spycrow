@@ -6,11 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     
     // Cached references
-    
     private AudioSource _audioSource;
     private MeshRenderer _meshRenderer;
-    
     private Color _materialColor;
+    
     private PlayerState _currState;
 
     private enum PlayerState
@@ -56,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private void EatPumpkin(GameObject pumpkin)
     {
-        pumpkin.gameObject.GetComponent<PumpkinController>().Eat();
+        pumpkin.GetComponent<PumpkinController>().Eat();
         ScoreManager.UpdateScore();
         if (!_audioSource.isPlaying)
         {
