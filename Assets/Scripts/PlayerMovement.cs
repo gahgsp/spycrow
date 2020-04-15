@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -30,22 +28,22 @@ public class PlayerMovement : MonoBehaviour
     
     private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.W) && CanMove(Vector3.forward))
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && CanMove(Vector3.forward))
         {
             _destPos += Vector3.forward;
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && CanMove(Vector3.right))
+        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && CanMove(Vector3.right))
         {
             _destPos += Vector3.right;
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && CanMove(Vector3.back))
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && CanMove(Vector3.back))
         {
             _destPos += Vector3.back;
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && CanMove(Vector3.left))
+        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && CanMove(Vector3.left))
         {
             _destPos += Vector3.left;
         }
