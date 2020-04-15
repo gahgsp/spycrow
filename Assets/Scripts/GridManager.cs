@@ -5,12 +5,20 @@ public class GridManager : MonoBehaviour
     [SerializeField] GameObject tilePrefab;
 
     private GameObject _firstTile;
+    private DifficultyManager _difficultyManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Retrieve the difficulty configurations
+        _difficultyManager = FindObjectOfType<DifficultyManager>();
+        // Generate the map
         GenerateGridTerrain();
+        // Retrieve the first tile on the map
         _firstTile = GetFirstTileOnGrid();
+        // Spawn scarecrows and pumpkins based on difficulty configuration
+        SpawnScareCrows();
+        SpawnPumpkins();
     }
 
     private void GenerateGridTerrain()
@@ -45,30 +53,63 @@ public class GridManager : MonoBehaviour
             (startingSpawnPosition + tileOffset + xyzPosition), Quaternion.identity, transform);
         
         var tileScript = tile.GetComponent<Tile>();
-        
-        // We ensure that the first tile and tiles surrounding it will be tile grass
-        if (IsFirstTile(row, col) || IsAdjacentToFirstTile(row, col))
+        tileScript.SetRowPosition(row);
+        tileScript.SetColumnPosition(col);
+    }
+
+    private void SpawnScareCrows()
+    {
+        var maxQuantityToSpawn = _difficultyManager.GetSpawnableQuantity();
+        var currentQuantity = 0;
+        while (currentQuantity < maxQuantityToSpawn)
         {
-            tileScript.SetTileType(Tile.TileType.GRASS);
-        }
-        else
-        {
-            // FIXME: This should be a generic random seed generator
-            var range = Random.Range(0, 10);
-            if (range == 0)
+            var rowPosition = Random.Range(0, 9);
+            var colPosition = Random.Range(0, 9);
+            if (!IsFirstTile(rowPosition, colPosition) && !IsAdjacentToFirstTile(rowPosition, colPosition))
             {
-                tileScript.SetTileType(Tile.TileType.SCARECROW);
-            }
-            else if (range == 1 || range == 2 || range == 3 || range == 4 || range == 5 || range == 6)
-            {
-                tileScript.SetTileType(Tile.TileType.GRASS);
-            }
-            else
-            {
-                tileScript.SetTileType(Tile.TileType.PLANT);
-                ScoreManager.AddPumpkinQuantityOnMap(1);
+                if (SetTileAtPositionOfType(rowPosition, colPosition, Tile.TileType.SCARECROW))
+                {
+                    currentQuantity++;   
+                }
             }
         }
+    }
+    
+    private void SpawnPumpkins()
+    {
+        var maxQuantityToSpawn = _difficultyManager.GetSpawnableQuantity();
+        var currentQuantity = 0;
+        while (currentQuantity < maxQuantityToSpawn)
+        {
+            var rowPosition = Random.Range(0, 9);
+            var colPosition = Random.Range(0, 9);
+            if (!IsFirstTile(rowPosition, colPosition) && !IsAdjacentToFirstTile(rowPosition, colPosition))
+            {
+                if (SetTileAtPositionOfType(rowPosition, colPosition, Tile.TileType.PLANT))
+                {
+                    ScoreManager.AddPumpkinQuantityOnMap(1);
+                    currentQuantity++;   
+                }
+            }
+        }
+    }
+
+    private bool SetTileAtPositionOfType(int rowPosition, int columnPosition, Tile.TileType tileType)
+    {
+        // FIXME: Check if there is a way to improve this logic, focusing on performance.
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var tileObjectScript = transform.GetChild(i).GetComponent<Tile>();
+            if (tileObjectScript.GetRowPosition() == rowPosition &&
+                tileObjectScript.GetColumnPosition() == columnPosition &&
+                tileObjectScript.IsGrass())
+            {
+                tileObjectScript.SetTileType(tileType);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private GameObject GetFirstTileOnGrid()
@@ -78,16 +119,7 @@ public class GridManager : MonoBehaviour
 
     private Tile GetFirstGrassTileOnGrid()
     {
-        foreach (Transform tileTransform in transform)
-        {
-            Tile tile = tileTransform.GetComponent<Tile>();
-            if (tile.IsGrass())
-            {
-                return tile;
-            }
-        }
-        
-        return null;
+        return GetFirstTileOnGrid().GetComponent<Tile>();
     }
 
     private bool IsFirstTile(int rowNum, int colNum)

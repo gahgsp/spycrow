@@ -28,6 +28,8 @@ public class Tile : MonoBehaviour
     }
 
     private TileType _currTileType = TileType.GRASS;
+    private int _rowPos = 0;
+    private int _colPos = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -87,5 +89,26 @@ public class Tile : MonoBehaviour
     {
         return _currTileType == TileType.GRASS;
     }
+
+    public void SetRowPosition(int row)
+    {
+        _rowPos = row;
+    }
+
+    public int GetRowPosition()
+    {
+        return _rowPos;
+    }
+    
+    public void SetColumnPosition(int col)
+    {
+        _colPos = col;
+    }
+
+    public int GetColumnPosition()
+    {
+        return _colPos;
+    }
+
 
 }
