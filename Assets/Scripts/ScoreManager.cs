@@ -8,7 +8,6 @@ public class ScoreManager : MonoBehaviour
     // Cached reference.
     private Text _scoreText;
     
-    private static int _score = 0;
     private static int _pumpkinAmount = 0;
     
     // Start is called before the first frame update
@@ -20,14 +19,9 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _scoreText.text = _score.ToString();
+        _scoreText.text = _pumpkinAmount.ToString();
     }
-
-    public static void ResetScore()
-    {
-        _score = 0;
-    }
-
+    
     public static void ResetQuantity()
     {
         _pumpkinAmount = 0;
@@ -35,7 +29,7 @@ public class ScoreManager : MonoBehaviour
 
     public static void UpdateScore()
     {
-        _score++;
+        _pumpkinAmount--;
     }
 
     public static void AddPumpkinQuantityOnMap(int quantity)
@@ -45,6 +39,6 @@ public class ScoreManager : MonoBehaviour
 
     public static bool CollectedAllPumpkins()
     {
-        return _pumpkinAmount == _score;
+        return _pumpkinAmount <= 0;
     }
 }
