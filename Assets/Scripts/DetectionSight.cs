@@ -28,6 +28,9 @@ public class DetectionSight : MonoBehaviour
         _currPosition = GetComponent<Transform>().position;
         
         _howFarCanISee = _collider.radius;
+
+        // Randomize the scarecrows rotation to increase difficulty
+        rotationSpeed += (rotationSpeed * Random.Range(0f, 1f));
     }
 
     // Update is called once per frame
