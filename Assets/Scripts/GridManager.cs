@@ -34,7 +34,7 @@ public class GridManager : MonoBehaviour
         GetFirstGrassTileOnGrid().SpawnCrow();
     }
 
-    private void SpawnTileAtPosition(Vector3 startingSpawnPosition, float row, float col)
+    private void SpawnTileAtPosition(Vector3 startingSpawnPosition, int row, int col)
     {
         // Align the tiles with the terrain
         Vector3 tileOffset = new Vector3(Tile.XZ_SIZE / 2.0f, 0, Tile.XZ_SIZE / 2.0f);
@@ -43,22 +43,31 @@ public class GridManager : MonoBehaviour
         // Instantiate the tiles on the grid
         GameObject tile = Instantiate(tilePrefab,
             (startingSpawnPosition + tileOffset + xyzPosition), Quaternion.identity, transform);
-
-        // FIXME: This should be a generic random seed generator
+        
         var tileScript = tile.GetComponent<Tile>();
-        var range = Random.Range(0, 10);
-        if (range == 0)
-        {
-            tileScript.SetTileType(Tile.TileType.SCARECROW);
-        }
-        else if (range == 1 || range == 2 || range == 3 || range == 4 || range == 5 || range == 6)
+        
+        // We ensure that the first tile and tiles surrounding it will be tile grass
+        if (IsFirstTile(row, col) || IsAdjacentToFirstTile(row, col))
         {
             tileScript.SetTileType(Tile.TileType.GRASS);
         }
         else
         {
-            tileScript.SetTileType(Tile.TileType.PLANT);
-            ScoreManager.AddPumpkinQuantityOnMap(1);
+            // FIXME: This should be a generic random seed generator
+            var range = Random.Range(0, 10);
+            if (range == 0)
+            {
+                tileScript.SetTileType(Tile.TileType.SCARECROW);
+            }
+            else if (range == 1 || range == 2 || range == 3 || range == 4 || range == 5 || range == 6)
+            {
+                tileScript.SetTileType(Tile.TileType.GRASS);
+            }
+            else
+            {
+                tileScript.SetTileType(Tile.TileType.PLANT);
+                ScoreManager.AddPumpkinQuantityOnMap(1);
+            }
         }
     }
 
@@ -79,6 +88,16 @@ public class GridManager : MonoBehaviour
         }
         
         return null;
+    }
+
+    private bool IsFirstTile(int rowNum, int colNum)
+    {
+        return rowNum == 0 && colNum == 0;
+    }
+
+    private bool IsAdjacentToFirstTile(int rowNum, int colNum)
+    {
+        return (rowNum == 0 && colNum == 1) || (rowNum == 1 && colNum == 0) || (rowNum == 1 && colNum == 1);
     }
 
     public float MinPositionX()
